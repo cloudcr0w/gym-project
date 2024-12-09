@@ -1,18 +1,44 @@
- # Gym Entry App
+# Gym Entry App 🚀
 
-## A gym entry application for member registration and login, facial recognition, class bookings, and subscription management, built using AWS services.
+## Overview
 
+**Gym Entry App** is a cloud-based application for **gym member registration**, **facial recognition**, **class bookings**, and **subscription management**, built with **AWS services**.  
 
-Technologies:
-AWS Cognito – for user management, authentication, and secure sign-up/login flows.
+_🚧🚧**In Progress**🚧🚧 — 🚧 Stay tuned for updates!_🚧
 
-AWS Rekognition – for facial recognition to identify members at the gym entrance.
+---
 
-AWS Lambda – for serverless backend logic to handle user interactions and processes.
+## Features ✨
 
-AWS DynamoDB – a scalable NoSQL database to store member details, subscriptions, and bookings.
+- **User Registration & Login** with AWS Cognito 🔑
+- **Facial Recognition** for gym entry with AWS Rekognition 🏋️‍♂️
+- **Class Bookings** via a user-friendly interface 📅
+- **Subscription Management** for members 💳
+- **SMS Notifications** for booking and payment reminders 📲
 
-AWS S3 – for secure and scalable image storage, including member photos for facial recognition.
+---
 
-AWS SNS – for sending SMS notifications for membership, class bookings, and payment reminders. 
+## Technologies 🛠️
 
+- **AWS Cognito** – User authentication and management  
+- **AWS Rekognition** – Facial recognition for member entry  
+- **AWS Lambda** – Backend logic  
+- **AWS DynamoDB** – Scalable NoSQL database  
+- **AWS S3** – Image storage for member photos  
+- **AWS SNS** – SMS notifications for updates  
+
+---
+
+## Getting Started 🏁
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/cloudcr0w/gym-project.git
+2. Set up AWS services (Cognito, Rekognition, Lambda, DynamoDB, S3, SNS).
+
+3. Deploy and test by registering a member and booking a class.
+
+## Future Improvements 🚧
+- ** Payment integration 💳
+- ** UI enhancements 🎨
+- ** Email notifications 📧
