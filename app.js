@@ -1,8 +1,11 @@
 const express = require('express');
-console.log("Aplikacja uruchomiona...");
+console.log("Working...");
 const session = require('express-session');
 const { Issuer, generators } = require('openid-client');
 const app = express();
+const AWS = require('aws-sdk');
+const cognito = new AWS.CognitoIdentityServiceProvider();
+
       
 let client;
 // Initialize OpenID Client
@@ -96,3 +99,56 @@ app.listen(8080, (err) => {
         console.log("Server is working on http://localhost:8080");
     }
 });
+// Dodajemy endpoint rejestracji
+app.post('/register', async (req, res) => {
+    const { email, password, given_name } = req.body;  // Pobieramy dane z body żądania
+
+    // Parametry dla Cognito (w tym ClientId z Cognito)
+    const params = {
+        ClientId: 'YOUR_APP_CLIENT_ID',  // Użyj swojego App Client ID
+        Username: email,
+        Password: password,
+        UserAttributes: [
+            { Name: 'email', Value: email },
+            { Name: 'given_name', Value: given_name }, // Dodaj inne atrybuty, jeśli chcesz
+        ],
+    };
+
+    try {
+        // Wywołujemy metodę signUp na Cognito
+        await cognito.signUp(params).promise();
+        res.status(200).send('User registered successfully!');
+    } catch (err) {
+        console.error(err);
+        res.status(400).send('Error during registration');
+    }
+});// Dodajemy endpoint logowania
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;  // Pobieramy dane z body żądania
+
+    // Parametry do autoryzacji
+    const params = {
+        AuthFlow: 'USER_PASSWORD_AUTH',  // Używamy tego przepływu autoryzacji
+        ClientId: 'YOUR_APP_CLIENT_ID',  // Użyj swojego App Client ID
+        AuthParameters: {
+            USERNAME: email,
+            PASSWORD: password,
+        },
+    };
+
+    try {
+        // Wywołujemy metodę initiateAuth na Cognito
+        const data = await cognito.initiateAuth(params).promise();
+        
+        // Zwracamy token dostępu, jeśli logowanie się powiodło
+        res.status(200).send({
+            message: 'Login successful!',
+            accessToken: data.AuthenticationResult.AccessToken,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(400).send('Login failed');
+    }
+});
+
+
