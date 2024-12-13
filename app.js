@@ -6,7 +6,6 @@ const app = express();
 const AWS = require('aws-sdk');
 const cognito = new AWS.CognitoIdentityServiceProvider();
 
-      
 let client;
 // Initialize OpenID Client
 async function initializeClient() {
@@ -99,37 +98,37 @@ app.listen(8080, (err) => {
         console.log("Server is working on http://localhost:8080");
     }
 });
-// Dodajemy endpoint rejestracji
+// Adding the registration endpoint
 app.post('/register', async (req, res) => {
-    const { email, password, given_name } = req.body;  // Pobieramy dane z body żądania
+    const { email, password, given_name } = req.body;  // Get data from the request body
 
-    // Parametry dla Cognito (w tym ClientId z Cognito)
+    // Parameters for Cognito (including ClientId from Cognito)
     const params = {
-        ClientId: 'YOUR_APP_CLIENT_ID',  // Użyj swojego App Client ID
+        ClientId: 'us-east-1_rt8yEUBqN',  //  App Client ID
         Username: email,
         Password: password,
         UserAttributes: [
             { Name: 'email', Value: email },
-            { Name: 'given_name', Value: given_name }, // Dodaj inne atrybuty, jeśli chcesz
+            { Name: 'given_name', Value: given_name }, // Add other attributes if needed
         ],
     };
 
     try {
-        // Wywołujemy metodę signUp na Cognito
+        // Call the signUp method on Cognito
         await cognito.signUp(params).promise();
         res.status(200).send('User registered successfully!');
     } catch (err) {
         console.error(err);
         res.status(400).send('Error during registration');
     }
-});// Dodajemy endpoint logowania
+});// Adding the login endpoint
 app.post('/login', async (req, res) => {
-    const { email, password } = req.body;  // Pobieramy dane z body żądania
+    const { email, password } = req.body;  // Get data from the request body
 
-    // Parametry do autoryzacji
+    // Parameters for authentication
     const params = {
-        AuthFlow: 'USER_PASSWORD_AUTH',  // Używamy tego przepływu autoryzacji
-        ClientId: 'YOUR_APP_CLIENT_ID',  // Użyj swojego App Client ID
+        AuthFlow: 'USER_PASSWORD_AUTH',  // We use this authentication flow
+        ClientId: 'us-east-1_rt8yEUBqN',  // App Client ID
         AuthParameters: {
             USERNAME: email,
             PASSWORD: password,
@@ -137,10 +136,10 @@ app.post('/login', async (req, res) => {
     };
 
     try {
-        // Wywołujemy metodę initiateAuth na Cognito
+        // Call the initiateAuth method on Cognito
         const data = await cognito.initiateAuth(params).promise();
         
-        // Zwracamy token dostępu, jeśli logowanie się powiodło
+        // Return the access token if login was successful
         res.status(200).send({
             message: 'Login successful!',
             accessToken: data.AuthenticationResult.AccessToken,
@@ -150,5 +149,3 @@ app.post('/login', async (req, res) => {
         res.status(400).send('Login failed');
     }
 });
-
-
