@@ -6,6 +6,15 @@
 <body>
     <h1>Amazon Cognito User Pool Demo</h1>
 
+
+
+
+ 
+    
+
+
+
+
     <% if (isAuthenticated) { %>
         <div>
             <h2>Welcome, <%= userInfo.username || userInfo.email %></h2>
@@ -20,5 +29,37 @@
         <!-- Link do rejestracji -->
         <a href="https://us-east-1rt8yeubqn.auth.us-east-1.amazoncognito.com/signup?client_id=7771uqoeprf1rtpvf1pnrahu62&redirect_uri=https%3A%2F%2Fd84l1y8p4kdic.cloudfront.net&response_type=code&scope=email+openid+phone">Register</a>
     <% } %>
+
+
+    <form action="/register" method="POST">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required>
+        
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+    
+        <label for="subscription_type">Subscription</label>
+        <select name="subscription_type" id="subscription_type" required>
+            <option value="3 entries">3 Entries</option>
+            <option value="5 entries">5 Entries</option>
+            <option value="unlimited">Unlimited</option>
+        </select>
+    
+        <button type="submit">Register</button>
+    </form>
+    <form action="/register-class" method="POST">
+        <label for="class_id">Select Class</label>
+        <select name="class_id" id="class_id" required>
+            <% classes.forEach((classItem) => { %>
+                <option value="<%= classItem.id %>"><%= classItem.name %> - <%= classItem.day %> at <%= classItem.time %></option>
+            <% }); %>
+        </select>
+        <button type="submit">Register for Class</button>
+    </form>
+    
 </body>
 </html>
+

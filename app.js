@@ -149,3 +149,13 @@ app.post('/login', async (req, res) => {
         res.status(400).send('Login failed');
     }
 });
+
+
+app.post('/register-class', (req, res) => {
+    const { user_id, class_id } = req.body;
+    const query = `INSERT INTO user_classes (user_id, class_id) VALUES (?, ?)`;
+    db.query(query, [user_id, class_id], (err, result) => {
+        if (err) throw err;
+        res.send('Successfully registered for the class!');
+    });
+});
